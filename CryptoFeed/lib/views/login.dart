@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -7,64 +8,26 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   Widget build(BuildContext context) {
+    GoogleSignInAccount? user = _googleSignIn.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
         centerTitle: true,
       ),
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'User Name',
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: TextField(
-              obscureText: true,
-              controller: passwordController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-            ),
-          ),
-          Container(
-              height: 50,
-              padding: const EdgeInsets.all(8),
-              child: Expanded(
-                child: Row(
-                  children: <Widget>[
-                    FloatingActionButton.extended(
-                      label: const Text('Login'),
-                      onPressed: () {
-                        nameController.text = "";
-                        passwordController.text = "";
-                      },
-                    ),
-                    FloatingActionButton.extended(
-                      label: const Text('Register'),
-                      onPressed: () {
-
-                      },
-                    )
-                  ],
-                ),
-              )
-          ),
+      body: Column(
+        children: [
+          FloatingActionButton(
+              onPressed: () async {
+            await _googleSignIn.signIn();
+            setState(() {});
+          }),
+          Text('You are '+(user == null ? 'not logged in' : user.email))
         ],
-      ),
+      )
     );
   }
 }
