@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled2/config/config.dart';
 import 'package:untitled2/views/all.dart';
+import 'package:untitled2/config/firebase_auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -8,6 +9,12 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    String dn = '';
+    if(user != null){
+      dn = user!.displayName.toString();
+    } else {
+      dn = '';
+    }
     return Drawer(
       child: ListView(
         children: [
@@ -23,6 +30,7 @@ class MyDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             )),
           ),
+          user == null ?
           ListTile(
             title: const Text('Login'),
             onTap: () {
@@ -32,7 +40,7 @@ class MyDrawer extends StatelessWidget {
                       builder: (context) => const LoginPage()));
             },
             leading: const Icon(Icons.login),
-          ),
+          ) : Text('Hello ' + dn),
           ListTile(
             title: const Text('News Feed'),
             onTap: () {

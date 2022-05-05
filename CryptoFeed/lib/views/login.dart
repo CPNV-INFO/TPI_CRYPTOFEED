@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:untitled2/config/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,11 +10,15 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 class _LoginPageState extends State<LoginPage> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   @override
   Widget build(BuildContext context) {
-    GoogleSignInAccount? user = _googleSignIn.currentUser;
+    String dn = '';
+    if(user != null){
+      dn = user!.displayName.toString();
+    } else {
+      dn = 'not logged in';
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -22,10 +28,10 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           FloatingActionButton(
               onPressed: () async {
-            await _googleSignIn.signIn();
+                await service.signInWithGoogle();
             setState(() {});
           }),
-          Text('You are '+(user == null ? 'not logged in' : user.email))
+          Text('You are '+(dn))
         ],
       )
     );
