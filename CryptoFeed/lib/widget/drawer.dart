@@ -40,7 +40,16 @@ class MyDrawer extends StatelessWidget {
                       builder: (context) => const LoginPage()));
             },
             leading: const Icon(Icons.login),
-          ) : Text('Hello ' + dn),
+          ) : ListTile(
+            title: Text('Hello '+dn),
+            leading: const Icon(Icons.account_circle),
+            trailing: IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await service.signOutFromGoogle();
+              },
+            ),
+          ),
           ListTile(
             title: const Text('News Feed'),
             onTap: () {
@@ -60,17 +69,6 @@ class MyDrawer extends StatelessWidget {
               );
             },
             leading: const Icon(Icons.monetization_on),
-          ),
-          ListTile(
-            title: const Text('My Transactions'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const TransactionsPage()),
-              );
-            },
-            leading: const Icon(Icons.compare_arrows_outlined),
           ),
           ListTile(
             title: const Text('Trending Searches'),

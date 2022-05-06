@@ -31,7 +31,6 @@ class FirebaseService {
     await _auth.signOut();
   }
 }
-
 User? user = FirebaseAuth.instance.currentUser;
 FirebaseService service = FirebaseService();
 

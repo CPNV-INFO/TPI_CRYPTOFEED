@@ -13,11 +13,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    String dn = '';
+    String _userName = '';
     if(user != null){
-      dn = user!.displayName.toString();
+      _userName = user!.displayName.toString();
     } else {
-      dn = 'not logged in';
+      _userName = 'not logged in';
     }
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                 await service.signInWithGoogle();
             setState(() {});
           }),
-          Text('You are '+(dn))
+          Text('You are '+(_userName))
         ],
       )
     );
