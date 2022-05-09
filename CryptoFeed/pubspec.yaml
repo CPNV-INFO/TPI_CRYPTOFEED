@@ -42,6 +42,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth_mocks: ^0.8.4
   google_sign_in_mocks: ^0.2.1
+  dartdoc: ^5.0.1
+  cloud_firestore: ^3.1.14
 
 dev_dependencies:
   flutter_test:

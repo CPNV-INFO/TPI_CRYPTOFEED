@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled2/config/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +13,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
     String _userName = '';
     if(user != null){
       _userName = user!.displayName.toString();
@@ -29,6 +30,9 @@ class _LoginPageState extends State<LoginPage> {
           FloatingActionButton(
               onPressed: () async {
                 await service.signInWithGoogle();
+                users.add({
+                  'uid':user!.uid
+                });
             setState(() {});
           }),
           Text('You are '+(_userName))
