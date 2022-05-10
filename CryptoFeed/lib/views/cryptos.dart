@@ -53,7 +53,7 @@ class _CryptoPageState extends State<CryptoPage> {
   }
 
   Widget _buildCryptos() {
-    CollectionReference favorites = FirebaseFirestore.instance.collection('favorites');
+    DocumentReference favorites = FirebaseFirestore.instance.collection('favorites').doc('maXqBx0vWBhpPKzSr16h');
     String currency = holder.toUpperCase();
     /*_cryptos.sort((b, a) => a['market_data']['current_price'][holder]
         .compareTo(b["market_data"]["current_price"][holder]));*/
@@ -77,6 +77,7 @@ class _CryptoPageState extends State<CryptoPage> {
         itemBuilder: (BuildContext context, int index) {
           final cryptos = _cryptos[index];
           bool toggle = false;
+
           String image = cryptos['image']['large'];
           return Card(
             child: Column(
@@ -95,13 +96,13 @@ class _CryptoPageState extends State<CryptoPage> {
                   trailing: IconButton(
                     icon: Icon(toggle ? Icons.favorite : Icons.favorite_border),
                     onPressed: () {
-                      favorites.add({
+                      /*favorites.add({
                         'name':cryptos['name'],
-                        'id':cryptos['id']
-                      });
+                        'id':cryptos['id'],
+                        'isFavorite':isFav
+                      });*/
                       setState(() {
                         toggle = !toggle;
-                        print(toggle);
                       });
                     },
                   ),
