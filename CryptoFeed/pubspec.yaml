@@ -1,4 +1,4 @@
-name: untitled2
+name: CryptoFeed
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -45,7 +45,6 @@ dependencies:
   dartdoc: ^5.0.1
   cloud_firestore: ^3.1.14
   github_sign_in: ^0.0.4
-  uni_links: ^0.5.1
 
 dev_dependencies:
   flutter_test:

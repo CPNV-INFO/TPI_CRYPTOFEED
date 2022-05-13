@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/config/config.dart';
-import 'package:untitled2/views/all.dart';
-import 'package:untitled2/config/firebase_auth.dart';
+import 'package:CryptoFeed/config/config.dart';
+import 'package:CryptoFeed/views/all.dart';
+import 'package:CryptoFeed/config/firebase_auth.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -12,8 +12,6 @@ class MyDrawer extends StatelessWidget {
     String dn = '';
     if(user != null){
       dn = user!.displayName.toString();
-    } else {
-      dn = '';
     }
     return Drawer(
       child: ListView(
@@ -30,7 +28,7 @@ class MyDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             )),
           ),
-          user == null ?
+          (user == null) ?
           ListTile(
             title: const Text('Login'),
             onTap: () {

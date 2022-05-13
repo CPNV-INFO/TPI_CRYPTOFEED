@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:untitled2/config/firebase_auth.dart';
+import 'package:CryptoFeed/config/firebase_auth.dart';
+import 'package:CryptoFeed/views/all.dart';
+import 'package:CryptoFeed/widget/all.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,37 +14,65 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
         appBar: AppBar(
           title: const Text('Login'),
           centerTitle: true,
         ),
-        body: Center(
-          child: Column(
-            children: [
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.google),
-                onPressed: () async {
-                  await service.signInWithGoogle();
-                  users.add({'uid': user!.uid});
-                  setState(() {});
-                },
-              ),
-              IconButton(
-                icon: const Icon(FontAwesomeIcons.github),
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const Dialog(
-                          child: Text("Not implemented yet"),
-                        );
-                      });
-                },
-              )
-            ],
-          ),
+        drawer: const MyDrawer(),
+        body: Column(
+          children: [
+            Image.asset(
+                isDarkMode
+                ? 'lib/widget/assets/Logo.png'
+                : 'lib/widget/assets/Logo_invert.png',
+            height: 250,),
+            const Icon(Icons.person, size: 150,),
+            Center(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FloatingActionButton.extended(
+                      icon: const Icon(FontAwesomeIcons.google),
+                      onPressed: () async {
+                        await service.signInWithGoogle();
+                        setState(() {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const TrendingPage()));
+                        });
+                      },
+                      label: const Text('Google Login'),
+                    ),
+                    const Text(' or '),
+                    FloatingActionButton.extended(
+                      icon: const Icon(FontAwesomeIcons.github),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Github Login'),
+                                actions: [
+                                  TextButton(
+                                    child: const Text('OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  )
+                                ],
+                                content: const Text('Login with Github is not implemented yet...'),
+                              );
+                            });
+                      },
+                      label: const Text('Github Login'),
+                    )
+                  ],
+                ),
+            ),
+          ],
         )
     );
   }

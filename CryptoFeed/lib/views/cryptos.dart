@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled2/widget/all.dart';
+import 'package:CryptoFeed/config/all.dart';
+import 'package:CryptoFeed/widget/all.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -52,12 +53,24 @@ class _CryptoPageState extends State<CryptoPage> {
     });
   }
 
+  int fav = 0;
+
+  @override
+  void initState() {
+    getCryptos();
+    super.initState();
+    fav = -1;
+  }
+
   Widget _buildCryptos() {
-    DocumentReference favorites = FirebaseFirestore.instance.collection('favorites').doc('maXqBx0vWBhpPKzSr16h');
+    CollectionReference favorites =
+        FirebaseFirestore.instance.collection('favorites');
+    String docID = '';
     String currency = holder.toUpperCase();
-    /*_cryptos.sort((b, a) => a['market_data']['current_price'][holder]
-        .compareTo(b["market_data"]["current_price"][holder]));*/
+    var notFavIcon = const Icon(Icons.favorite_border);
+    var favIcon = const Icon(Icons.favorite);
     return Scaffold(
+      /// Go back to top Button
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Go back to top'),
         onPressed: () {
@@ -70,56 +83,68 @@ class _CryptoPageState extends State<CryptoPage> {
         },
         icon: const Icon(Icons.arrow_upward),
       ),
-      body: ListView.builder(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(8),
-        itemCount: _cryptos.length,
-        itemBuilder: (BuildContext context, int index) {
-          final cryptos = _cryptos[index];
-          bool toggle = false;
-
-          String image = cryptos['image']['large'];
-          return Card(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(image),
-                    backgroundColor: Colors.transparent,
+      body: (_cryptos.isEmpty)
+          ? const Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              controller: _scrollController,
+              padding: const EdgeInsets.all(8),
+              itemCount: _cryptos.length,
+              itemBuilder: (BuildContext context, int index) {
+                final cryptos = _cryptos[index];
+                String image = cryptos['image']['large'];
+                return Card(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(image),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        title: Text(cryptos['name']),
+                        subtitle: Text("" +
+                            cryptos['market_data']['current_price'][holder]
+                                .toString() +
+                            " $currency"),
+                        trailing: IconButton(
+                          icon: Icon(((fav == index))
+                              ? Icons.favorite
+                              : Icons.favorite_border),
+                          onPressed: () {
+                            if (user != null) {
+                              if (fav == index) {
+                                favorites.doc(docID).delete();
+                              } else {
+                                favorites.add({
+                                  'id': cryptos['id'],
+                                  'isFavorite': true,
+                                  'userID': user?.uid
+                                }).then((value) => docID = value.id);
+                              }
+                              setState(() {
+                                fav = index;
+                              });
+                            } else {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return const Dialog(
+                                      child: Card(
+                                        child: Text(
+                                            'You are not logged in. Please login in order to add a Crypto to favorites'),
+                                      ),
+                                    );
+                                  });
+                            }
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                  title: Text(cryptos['name']),
-                  subtitle: Text("" +
-                      cryptos['market_data']['current_price'][holder]
-                          .toString() +
-                      " $currency"),
-                  trailing: IconButton(
-                    icon: Icon(toggle ? Icons.favorite : Icons.favorite_border),
-                    onPressed: () {
-                      /*favorites.add({
-                        'name':cryptos['name'],
-                        'id':cryptos['id'],
-                        'isFavorite':isFav
-                      });*/
-                      setState(() {
-                        toggle = !toggle;
-                      });
-                    },
-                  ),
-                )
-              ],
+                );
+              },
             ),
-          );
-        },
-      ),
     );
-  }
-
-  @override
-  void initState() {
-    //_foundCryptos = _cryptos;
-    getCryptos();
-    super.initState();
   }
 
   String selectedValue = 'usd';

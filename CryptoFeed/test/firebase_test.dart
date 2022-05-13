@@ -26,4 +26,8 @@ void main(){
     print(_user?.displayName);
 
   });
+
+  test('Github Authentication', () async {
+
+  });
 }

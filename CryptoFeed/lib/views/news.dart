@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled2/data/all.dart';
-import 'package:untitled2/widget/all.dart';
-import 'package:untitled2/views/all.dart';
+import 'package:CryptoFeed/data/all.dart';
+import 'package:CryptoFeed/widget/all.dart';
+import 'package:CryptoFeed/views/all.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -113,7 +113,7 @@ class _NewsPageState extends State<NewsPage> {
                             transitionsBuilder: (c, anim, a2, child) =>
                                 FadeTransition(opacity: anim, child: child),
                             transitionDuration:
-                                const Duration(milliseconds: 200)),
+                            const Duration(milliseconds: 200)),
                       );
                     },
                   )

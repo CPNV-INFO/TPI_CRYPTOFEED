@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:http/http.dart' as http;
-import 'package:untitled2/data/all.dart';
-import 'package:untitled2/widget/all.dart';
+import 'package:CryptoFeed/data/all.dart';
+import 'package:CryptoFeed/widget/all.dart';
 
 class TrendingPage extends StatefulWidget {
   const TrendingPage({Key? key}) : super(key: key);
