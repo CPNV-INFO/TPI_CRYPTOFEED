@@ -10,9 +10,9 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    String dn = '';
+    String userName = '';
     if(user != null){
-      dn = user!.displayName.toString();
+      userName = user!.displayName.toString();
     }
     return Drawer(
       child: ListView(
@@ -40,12 +40,16 @@ class MyDrawer extends StatelessWidget {
             },
             leading: const Icon(Icons.login),
           ) : ListTile(
-            title: Text('Hello '+dn),
+            title: Text('Hello '+userName),
             leading: const Icon(Icons.account_circle),
             trailing: IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () async {
                 await service.signOutFromGoogle();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TrendingPage()));
               },
             ),
           ),

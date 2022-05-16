@@ -24,56 +24,58 @@ class _LoginPageState extends State<LoginPage> {
         body: Column(
           children: [
             Image.asset(
-                isDarkMode
-                ? 'lib/widget/assets/Logo.png'
-                : 'lib/widget/assets/Logo_invert.png',
-            height: 250,),
-            const Icon(Icons.person, size: 150,),
+              isDarkMode
+                  ? 'lib/widget/assets/Logo.png'
+                  : 'lib/widget/assets/Logo_invert.png',
+              height: 250,
+            ),
+            const Icon(
+              Icons.person,
+              size: 150,
+            ),
             Center(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    FloatingActionButton.extended(
-                      icon: const Icon(FontAwesomeIcons.google),
-                      onPressed: () async {
-                        await service.signInWithGoogle();
-                        setState(() {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const TrendingPage()));
-                        });
-                      },
-                      label: const Text('Google Login'),
-                    ),
-                    const Text(' or '),
-                    FloatingActionButton.extended(
-                      icon: const Icon(FontAwesomeIcons.github),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Github Login'),
-                                actions: [
-                                  TextButton(
-                                    child: const Text('OK'),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  )
-                                ],
-                                content: const Text('Login with Github is not implemented yet...'),
-                              );
-                            });
-                      },
-                      label: const Text('Github Login'),
-                    )
-                  ],
-                ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FloatingActionButton.extended(
+                    icon: const Icon(FontAwesomeIcons.google),
+                    onPressed: () async {
+                      await service.signInWithGoogle();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TrendingPage()));
+                    },
+                    label: const Text('Google Login'),
+                  ),
+                  const Text(' or '),
+                  FloatingActionButton.extended(
+                    icon: const Icon(FontAwesomeIcons.github),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Github Login'),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                              content: const Text(
+                                  'Login with Github is not implemented yet...'),
+                            );
+                          });
+                    },
+                    label: const Text('Github Login'),
+                  )
+                ],
+              ),
             ),
           ],
-        )
-    );
+        ));
   }
 }
