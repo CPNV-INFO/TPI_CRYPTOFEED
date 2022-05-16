@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:CryptoFeed/config/config.dart';
 import 'package:CryptoFeed/views/all.dart';
@@ -28,7 +29,7 @@ class MyDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             )),
           ),
-          (user == null) ?
+          (FirebaseAuth.instance.currentUser == null) ?
           ListTile(
             title: const Text('Login'),
             onTap: () {

@@ -15,10 +15,22 @@ class CryptoPage extends StatefulWidget {
 }
 
 class _CryptoPageState extends State<CryptoPage> {
+  /// Will store the API values after map
   List<dynamic> _cryptos = [];
-  final ScrollController _scrollController = ScrollController();
-  RefreshController controller = RefreshController(initialRefresh: true);
 
+  /// Scroll Controller for "go back to top" button
+  final ScrollController _scrollController = ScrollController();
+
+  /// Selected currency is the dropdown in AppBar
+  String selectedValue = 'usd';
+
+  /// Will be used as a variable in a [setState] for updating Crypto price currency displayed in the list
+  String holder = 'usd';
+
+  /// Will be used as a variable in the [setState] for changing the favorite icon
+  int fav = 0;
+
+  /// Declares of dropdown items of Crypto price currency
   List<DropdownMenuItem<String>> get listCurrencies {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(
@@ -37,6 +49,7 @@ class _CryptoPageState extends State<CryptoPage> {
     return menuItems;
   }
 
+  /// Loads the API and calls the model that maps the values
   void getCryptos() async {
     final response =
         await http.get(Uri.parse("https://api.coingecko.com/api/v3/coins"));
@@ -45,30 +58,28 @@ class _CryptoPageState extends State<CryptoPage> {
     });
   }
 
-  String holder = 'usd';
-
+  /// Changes the holder to the selected price currency of the dropdown
   void getDropDownItem() {
     setState(() {
       holder = selectedValue;
     });
   }
 
-  int fav = 0;
-
+  /// Initializes the state of the page
   @override
   void initState() {
     getCryptos();
     super.initState();
+    // Favorite index set to -1 because if set to 0, the first Crypto appears like it was in favorite
     fav = -1;
   }
 
+  /// Build the Crypto list page
   Widget _buildCryptos() {
     CollectionReference favorites =
         FirebaseFirestore.instance.collection('favorites');
     String docID = '';
     String currency = holder.toUpperCase();
-    var notFavIcon = const Icon(Icons.favorite_border);
-    var favIcon = const Icon(Icons.favorite);
     return Scaffold(
       /// Go back to top Button
       floatingActionButton: FloatingActionButton.extended(
@@ -147,8 +158,7 @@ class _CryptoPageState extends State<CryptoPage> {
     );
   }
 
-  String selectedValue = 'usd';
-
+  /// Builds the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
