@@ -73,13 +73,15 @@ class _CryptoPageState extends State<CryptoPage> {
     // Favorite index set to -1 because if set to 0, the first Crypto appears like it was in favorite
     fav = -1;
   }
-
+  final List<bool> boolFavorites = [];
   /// Build the Crypto list page
   Widget _buildCryptos() {
-    CollectionReference favorites =
-        FirebaseFirestore.instance.collection('favorites');
-    String docID = '';
+    CollectionReference favorites = FirebaseFirestore.instance.collection('favorites');
+    DocumentReference docRef = favorites.doc();
     String currency = holder.toUpperCase();
+    for (int i = 0; i <= _cryptos.length; i++) {
+      boolFavorites.add(false);
+    }
     return Scaffold(
       /// Go back to top Button
       floatingActionButton: FloatingActionButton.extended(
@@ -118,23 +120,23 @@ class _CryptoPageState extends State<CryptoPage> {
                                 .toString() +
                             " $currency"),
                         trailing: IconButton(
-                          icon: Icon(((fav == index))
+                          icon: Icon(boolFavorites[index]
                               ? Icons.favorite
                               : Icons.favorite_border),
                           onPressed: () {
                             if (user != null) {
-                              if (fav == index) {
-                                favorites.doc(docID).delete();
-                              } else {
+                              if (boolFavorites[index] == false) {
                                 favorites.add({
                                   'id': cryptos['id'],
                                   'isFavorite': true,
                                   'userID': user?.uid
-                                }).then((value) => docID = value.id);
+                                });
+                                boolFavorites[index] = !boolFavorites[index];
+                                setState(() {});
+                              } else if ((boolFavorites[index] == true)) {
+                                favorites.doc(docRef.id).delete();
+                                setState(() {});
                               }
-                              setState(() {
-                                fav = index;
-                              });
                             } else {
                               showDialog(
                                   context: context,
