@@ -52,23 +52,15 @@ class _LoginPageState extends State<LoginPage> {
                   FloatingActionButton.extended(
                     icon: const Icon(FontAwesomeIcons.github),
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text('Github Login'),
-                              actions: [
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                )
-                              ],
-                              content: const Text(
-                                  'Login with Github is not implemented yet...'),
-                            );
-                          });
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                        content: Text(
+                          "Login with Github is not yet implemented.",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.red,
+                      ));
                     },
                     label: const Text('Github Login'),
                   )
