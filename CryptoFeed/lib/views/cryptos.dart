@@ -73,10 +73,13 @@ class _CryptoPageState extends State<CryptoPage> {
     // Favorite index set to -1 because if set to 0, the first Crypto appears like it was in favorite
     fav = -1;
   }
+
   final List<bool> boolFavorites = [];
+
   /// Build the Crypto list page
   Widget _buildCryptos() {
-    CollectionReference favorites = FirebaseFirestore.instance.collection('favorites');
+    CollectionReference favorites =
+        FirebaseFirestore.instance.collection('favorites');
     DocumentReference docRef = favorites.doc();
     String currency = holder.toUpperCase();
     for (int i = 0; i <= _cryptos.length; i++) {
@@ -138,16 +141,15 @@ class _CryptoPageState extends State<CryptoPage> {
                                 setState(() {});
                               }
                             } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return const Dialog(
-                                      child: Card(
-                                        child: Text(
-                                            'You are not logged in. Please login in order to add a Crypto to favorites'),
-                                      ),
-                                    );
-                                  });
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                  "You are not logged in. Please login in order to add a Crypto to favorites.",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.red,
+                              ));
                             }
                           },
                         ),

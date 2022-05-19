@@ -113,7 +113,7 @@ class _NewsPageState extends State<NewsPage> {
                             transitionsBuilder: (c, anim, a2, child) =>
                                 FadeTransition(opacity: anim, child: child),
                             transitionDuration:
-                            const Duration(milliseconds: 200)),
+                                const Duration(milliseconds: 200)),
                       );
                     },
                   )
