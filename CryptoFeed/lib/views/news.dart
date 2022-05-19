@@ -52,7 +52,7 @@ class _NewsPageState extends State<NewsPage> {
       floatingActionButton: FloatingActionButton.extended(
         label: const Text('Go back to top'),
         onPressed: () {
-          SchedulerBinding.instance?.addPostFrameCallback((_) {
+          SchedulerBinding.instance.addPostFrameCallback((_) {
             _scrollController.animateTo(
                 _scrollController.position.minScrollExtent,
                 duration: const Duration(milliseconds: 1000),
