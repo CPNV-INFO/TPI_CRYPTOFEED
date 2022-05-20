@@ -2,6 +2,10 @@
 Suivre les instructions décrites ci-dessus pour pouvoir installer l'environnement
 
 ## Guide d'installation
+#### Android Studio
+- Aller sur https://developer.android.com/studio/
+- Cliquer sur **Download Android Studio** (La version utilisée dans mon projet est la version **Chipmunk 2021.2.1** qui est la dernière version en date)
+
 #### Plugin Android Studio
 - Lancer Android Studio
 - Cliquer sur **File** -> **Settings**
