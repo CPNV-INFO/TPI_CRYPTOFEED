@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FloatingActionButton.extended(
+                    heroTag: 'btnLoginGoogle',
                     icon: const Icon(FontAwesomeIcons.google),
                     onPressed: () async {
                       await service.signInWithGoogle();
@@ -50,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Text(' or '),
                   FloatingActionButton.extended(
+                    heroTag: 'btnLoginGithub',
                     icon: const Icon(FontAwesomeIcons.github),
                     onPressed: () {
                       ScaffoldMessenger.of(context)

@@ -87,6 +87,7 @@ class MyDrawer extends StatelessWidget {
           ),
           Align(
             child: FloatingActionButton.extended(
+              heroTag: 'btnSwitchTheme',
               onPressed: () {
                 currentTheme.switchTheme();
               },

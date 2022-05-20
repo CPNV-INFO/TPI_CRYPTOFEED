@@ -27,9 +27,6 @@ class _CryptoPageState extends State<CryptoPage> {
   /// Will be used as a variable in a [setState] for updating Crypto price currency displayed in the list
   String holder = 'usd';
 
-  /// Will be used as a variable in the [setState] for changing the favorite icon
-  int fav = 0;
-
   /// Declares of dropdown items of Crypto price currency
   List<DropdownMenuItem<String>> get listCurrencies {
     List<DropdownMenuItem<String>> menuItems = [
@@ -70,24 +67,49 @@ class _CryptoPageState extends State<CryptoPage> {
   void initState() {
     getCryptos();
     super.initState();
-    // Favorite index set to -1 because if set to 0, the first Crypto appears like it was in favorite
-    fav = -1;
+  }
+
+  List<String> docIDs = [];
+
+  Future getDocId() async {
+    await FirebaseFirestore.instance
+        .collection('favorites')
+        .get()
+        .then((snapshot) => snapshot.docs.forEach((document) {
+              docIDs.add(document.reference.id);
+            }));
   }
 
   final List<bool> boolFavorites = [];
 
+  final String? _user = user?.uid.toString();
+
   /// Build the Crypto list page
   Widget _buildCryptos() {
+    String currency = holder.toUpperCase();
     CollectionReference favorites =
         FirebaseFirestore.instance.collection('favorites');
-    DocumentReference docRef = favorites.doc();
-    String currency = holder.toUpperCase();
-    for (int i = 0; i <= _cryptos.length; i++) {
+    var ref = favorites.doc('bitcoin');
+    ref.get().then((value) {
+      if (value.exists == false) {
+        for (int i = 0; i < _cryptos.length; i++) {
+          favorites.doc(_cryptos[i]['id']).set({
+            'id': _cryptos[i]['id'],
+            'name': _cryptos[i]['name'],
+          });
+          CollectionReference favs =
+              favorites.doc(_cryptos[i]['id']).collection('userID');
+          favs.doc(_user!).set({'isFavorite': false});
+        }
+      }
+    });
+    for (int i = 0; i < _cryptos.length; i++) {
       boolFavorites.add(false);
     }
     return Scaffold(
       /// Go back to top Button
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'btnTopCrypto',
         label: const Text('Go back to top'),
         onPressed: () {
           SchedulerBinding.instance?.addPostFrameCallback((_) {
@@ -108,52 +130,50 @@ class _CryptoPageState extends State<CryptoPage> {
               itemBuilder: (BuildContext context, int index) {
                 final cryptos = _cryptos[index];
                 String image = cryptos['image']['large'];
+                CollectionReference favs =
+                    favorites.doc(cryptos['id']).collection('userID');
                 return Card(
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(image),
-                          backgroundColor: Colors.transparent,
-                        ),
-                        title: Text(cryptos['name']),
-                        subtitle: Text("" +
-                            cryptos['market_data']['current_price'][holder]
-                                .toString() +
-                            " $currency"),
-                        trailing: IconButton(
-                          icon: Icon(boolFavorites[index]
-                              ? Icons.favorite
-                              : Icons.favorite_border),
-                          onPressed: () {
-                            if (user != null) {
-                              if (boolFavorites[index] == false) {
-                                favorites.add({
-                                  'id': cryptos['id'],
-                                  'isFavorite': true,
-                                  'userID': user?.uid
-                                });
+                          leading: CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(image),
+                            backgroundColor: Colors.transparent,
+                          ),
+                          title: Text(cryptos['name']),
+                          subtitle: Text("" +
+                              cryptos['market_data']['current_price'][holder]
+                                  .toString() +
+                              " $currency"),
+                          trailing: IconButton(
+                            icon: Icon(boolFavorites[index]
+                                ? Icons.favorite
+                                : Icons.favorite_border),
+                            onPressed: () {
+                              if (user != null) {
+                                if (boolFavorites[index] == false) {
+                                  favs.doc(_user!).update({'isFavorite': true});
+                                } else {
+                                  favs
+                                      .doc(_user!)
+                                      .update({'isFavorite': false});
+                                }
                                 boolFavorites[index] = !boolFavorites[index];
                                 setState(() {});
-                              } else if ((boolFavorites[index] == true)) {
-                                favorites.doc(docRef.id).delete();
-                                setState(() {});
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                    "You are not logged in. Please login in order to add a Crypto to favorites.",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.red,
+                                ));
                               }
-                            } else {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                content: Text(
-                                  "You are not logged in. Please login in order to add a Crypto to favorites.",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                behavior: SnackBarBehavior.floating,
-                                backgroundColor: Colors.red,
-                              ));
-                            }
-                          },
-                        ),
-                      )
+                            },
+                          ))
                     ],
                   ),
                 );
