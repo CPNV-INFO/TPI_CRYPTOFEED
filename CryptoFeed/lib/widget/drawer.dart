@@ -11,7 +11,7 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     String userName = '';
-    if(user != null){
+    if (user != null) {
       userName = user!.displayName.toString();
     }
     return Drawer(
@@ -29,38 +29,41 @@ class MyDrawer extends StatelessWidget {
                       fit: BoxFit.cover)),
             )),
           ),
-          (FirebaseAuth.instance.currentUser == null) ?
-          ListTile(
-            title: const Text('Login'),
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const LoginPage()));
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.data?.uid == null) {
+                return ListTile(
+                    title: const Text('Login'),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
+                    },
+                    leading: const Icon(Icons.login));
+              } else {
+                return ListTile(
+                  title: Text('Hello ' + userName),
+                  leading: const Icon(Icons.account_circle),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: () async {
+                      await service.signOutFromGoogle();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return TrendingPage();
+                      }));
+                    },
+                  ),
+                );
+              }
             },
-            leading: const Icon(Icons.login),
-          ) : ListTile(
-            title: Text('Hello '+userName),
-            leading: const Icon(Icons.account_circle),
-            trailing: IconButton(
-              icon: const Icon(Icons.logout),
-              onPressed: () async {
-                await service.signOutFromGoogle();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) {
-                          return const TrendingPage();
-                        }));
-              },
-            ),
           ),
           ListTile(
             title: const Text('News Feed'),
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const NewsPage()),
+                MaterialPageRoute(builder: (context) => NewsPage()),
               );
             },
             leading: const Icon(Icons.new_releases_sharp),
@@ -70,7 +73,7 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CryptoPage()),
+                MaterialPageRoute(builder: (context) => CryptoPage()),
               );
             },
             leading: const Icon(Icons.monetization_on),
@@ -78,10 +81,8 @@ class MyDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Trending Searches'),
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const TrendingPage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TrendingPage()));
             },
             leading: const Icon(Icons.house),
           ),
