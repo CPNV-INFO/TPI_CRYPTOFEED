@@ -52,6 +52,15 @@ class MyDrawer extends StatelessWidget {
                           MaterialPageRoute(builder: (context) {
                         return TrendingPage();
                       }));
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          "You are now logged out !",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.red,
+                        duration: Duration(milliseconds: 1500),
+                      ));
                     },
                   ),
                 );

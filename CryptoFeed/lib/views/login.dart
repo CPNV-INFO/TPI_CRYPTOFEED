@@ -46,6 +46,15 @@ class _LoginPageState extends State<LoginPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const TrendingPage()));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                          "You are logged in ! Hello ${user!.displayName} !",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.green,
+                        duration: Duration(milliseconds: 4000),
+                      ));
                     },
                     label: const Text('Google Login'),
                   ),
@@ -54,8 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     heroTag: 'btnLoginGithub',
                     icon: const Icon(FontAwesomeIcons.github),
                     onPressed: () {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
                           "Login with Github is not yet implemented.",
                           style: TextStyle(color: Colors.white),
