@@ -37,12 +37,16 @@ Pour installer cet émulateur veuillez suivre les étapes suivantes :
 - Vérifier la configuration -> Cliquer sur **Next**
 - Une fois que tout est installé -> Cliquer sur l'icône du **Device Manager** (en haut à droite) -> Cliquer sur l'icône **Run** -> L'émulateur se lance et est prêt à recevoir l'application.
 
-
-## Guide de lancement
-- Ouvrir le terminal Android Studio
-- Ouvrir le fichier ``main.dart`` -> Cliquer sur l'icône **Run** en haut de la fenêtre ou avec la combinaison **Maj + F10**. Cela lancera l'application en mode Debug (toutes les actions seront visibles dans le terminal d'Android Studio avec les potentiels erreurs)
-
 ## Guide de debug
-Flutter intègre des outils de debug par défaut. Pour débugger l'application il suffit de :
-- Lancer le fichier ``main.dart`` en cliquant sur l'icône **Debug** en haut de la fenêtre ou avec la combinaison **Maj + F9**
-- Vous pourrez alors utiliser l'application normalement et voir les erreurs ou ajouter des points d'arrêt sur la gauche du code
+Note importante :
+
+Pour pouvoir debugger la partie Authentification et Favoris, il faut pouvoir utiliser le Login avec Google. Cependant, il faut que la clé SHA1 de votre machine figure dans les paramètres de l'application Firebase, chose que vous ne pouvez pas faire vous-même. La console Firebase n'étant accessible qu'avec mon addresse Google personnelle.
+
+Vous pouvez cependant tester l'application en l'état en buildant l'application en mode "Release". Pour se faire :
+- Ouvrir le terminal Android Studio
+- Taper la commande ``flutter run --release``
+
+Vous ne pourrez donc pas debugger l'application ni faire de changements dans le code et voir les modifications en live.
+
+Cependant, si vous voulez debugger la partie liste de Cryptos et liste de News, vous pouvez le faire sans problèmes étant donné que pour voir visualiser et naviguer dans ces listes, il n'y a pas besoin d'utiliser l'Authentification Google. Pour se faire :
+- lancer le fichier ``main.dart`` en cliquant sur l'icône **Debug** en haut de la fenêtre ou avec la combinaison ``MAJ + F9``
