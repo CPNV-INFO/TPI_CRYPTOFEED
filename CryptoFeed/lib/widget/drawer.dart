@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:CryptoFeed/config/config.dart';
 import 'package:CryptoFeed/views/all.dart';
 import 'package:CryptoFeed/config/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -46,8 +47,9 @@ class MyDrawer extends StatelessWidget {
                   leading: const Icon(Icons.account_circle),
                   trailing: IconButton(
                     icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      await service.signOutFromGoogle();
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                      GoogleSignIn().signOut();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return TrendingPage();

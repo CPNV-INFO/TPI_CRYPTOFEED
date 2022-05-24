@@ -1,4 +1,5 @@
 import 'package:CryptoFeed/data/cryptos_data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
@@ -7,14 +8,14 @@ import 'package:CryptoFeed/widget/all.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CryptoPage extends StatefulWidget with ChangeNotifier {
-  CryptoPage({Key? key}) : super(key: key);
+class CryptoPage extends StatefulWidget{
+  const CryptoPage({Key? key}) : super(key: key);
 
   @override
   State<CryptoPage> createState() => _CryptoPageState();
 }
 
-class _CryptoPageState extends State<CryptoPage> {
+class _CryptoPageState extends State<CryptoPage> with ChangeNotifier{
   /// Will store the API values after map
   static List<Cryptos> _cryptos = [];
 
@@ -192,6 +193,7 @@ class _CryptoPageState extends State<CryptoPage> {
                                 });
                               }
                               boolFavorites[index] = !boolFavorites[index];
+                              notifyListeners();
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(

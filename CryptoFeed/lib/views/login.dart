@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                               builder: (context) => const TrendingPage()));
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
-                          "You are logged in ! Hello ${user!.displayName} !",
+                          "You are logged in ! Hello ${user?.displayName} !",
                           style: TextStyle(color: Colors.white),
                         ),
                         behavior: SnackBarBehavior.floating,
