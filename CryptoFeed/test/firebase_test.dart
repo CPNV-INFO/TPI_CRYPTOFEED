@@ -23,11 +23,6 @@ void main(){
     final auth = MockFirebaseAuth(mockUser: user);
     final result = await auth.signInWithCredential(credential);
     final _user = result.user;
-    print(_user?.displayName);
-
-  });
-
-  test('Github Authentication', () async {
-
+    expect(user.displayName, _user?.displayName);
   });
 }
