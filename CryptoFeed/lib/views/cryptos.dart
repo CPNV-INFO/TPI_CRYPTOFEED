@@ -1,21 +1,22 @@
 import 'package:CryptoFeed/data/cryptos_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:CryptoFeed/config/all.dart';
+import 'package:CryptoFeed/config/config.dart';
 import 'package:CryptoFeed/widget/all.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CryptoPage extends StatefulWidget{
+class CryptoPage extends StatefulWidget {
   const CryptoPage({Key? key}) : super(key: key);
 
   @override
   State<CryptoPage> createState() => _CryptoPageState();
 }
 
-class _CryptoPageState extends State<CryptoPage> with ChangeNotifier{
+class _CryptoPageState extends State<CryptoPage> with ChangeNotifier {
   /// Will store the API values after map
   static List<Cryptos> _cryptos = [];
 
@@ -78,8 +79,6 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier{
     });
   }
 
-  final List<bool> boolFavorites = [];
-
   final String? _user = user?.uid.toString();
 
   /// Build the Crypto list page
@@ -88,20 +87,32 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier{
     CollectionReference favorites =
         FirebaseFirestore.instance.collection('favorites');
     String page = "$currentPage" + 10.toString();
-    var ref = favorites.doc(page);
-    ref.get().then((value) {
-      if (value.exists == false) {
-        for (int i = 0; i < _cryptos.length; i++) {
-          favorites.doc(_cryptos[i].id).set({
-            'id': _cryptos[i].id,
-            'name': _cryptos[i].name,
-            'isFavorite': []
-          });
-        }
+    List<String>? favoris;
+
+    if (boolFavorites!.isNotEmpty) {
+      while (boolFavorites!.length < _cryptos.length) {
+        boolFavorites!.add("false");
       }
-    });
-    for (int i = 0; i < _cryptos.length; i++) {
-      boolFavorites.add(false);
+      saveStringListValue() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setStringList("boolFavs", boolFavorites!);
+      }
+
+      saveStringListValue();
+
+      getStringListValue() async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        List<String>? boolFavs = prefs.getStringList("boolFavs");
+        return boolFavs;
+      }
+
+      void getFavs() async {
+        var tempList = await getStringListValue();
+        favoris = tempList;
+        print(favoris);
+      }
+
+      getFavs();
     }
     return Scaffold(
 
@@ -178,22 +189,23 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier{
                         title: Text(cryptos.name),
                         subtitle: Text("" + price + " $currency"),
                         trailing: IconButton(
-                          icon: Icon(boolFavorites[index] == true
+                          icon: Icon(boolFavorites?[index] == "true"
                               ? Icons.favorite
                               : Icons.favorite_border),
                           onPressed: () {
                             if (user != null) {
-                              if (boolFavorites[index] == true) {
+                              if (boolFavorites?[index] == "true") {
                                 favs.update({
                                   "isFavorite": FieldValue.arrayRemove([_user])
                                 });
+                                boolFavorites?[index] = "false";
                               } else {
                                 favs.update({
                                   'isFavorite': FieldValue.arrayUnion([_user])
                                 });
+                                boolFavorites?[index] = "true";
                               }
-                              boolFavorites[index] = !boolFavorites[index];
-                              notifyListeners();
+                              setState(() {});
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(

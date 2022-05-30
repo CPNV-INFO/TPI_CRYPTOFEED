@@ -26,16 +26,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => FirebaseService(),
-      child: MaterialApp(
-        title: 'CryptoFeed',
-        home: const SplashScreen(),
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: currentTheme.currentTheme(),
-      )
-    );
+        create: (context) => FirebaseService(),
+        child: MaterialApp(
+          title: 'CryptoFeed',
+          home: const SplashScreen(),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light(),
+          darkTheme: ThemeData.dark(),
+          themeMode: currentTheme.currentTheme(),
+        ));
   }
 
   @override
