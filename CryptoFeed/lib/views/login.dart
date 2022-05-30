@@ -49,11 +49,11 @@ class _LoginPageState extends State<LoginPage> {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         content: Text(
                           "You are logged in ! Hello ${user?.displayName} !",
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                         behavior: SnackBarBehavior.floating,
                         backgroundColor: Colors.green,
-                        duration: Duration(milliseconds: 4000),
+                        duration: const Duration(milliseconds: 4000),
                       ));
                     },
                     label: const Text('Google Login'),

@@ -89,6 +89,24 @@ class MyDrawer extends StatelessWidget {
             },
             leading: const Icon(Icons.monetization_on),
           ),
+          StreamBuilder<User?>(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.data?.uid == null) {
+                return ListTile(
+                    title: const Text('Favorites'),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => FavoritesPage()));
+                    },
+                    leading: const Icon(Icons.login));
+              } else {
+                return Container();
+              }
+            },
+          ),
           ListTile(
             title: const Text('Trending Searches'),
             onTap: () {

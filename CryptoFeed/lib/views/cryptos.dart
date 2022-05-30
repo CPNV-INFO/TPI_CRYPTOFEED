@@ -53,8 +53,9 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier {
 
   /// Loads the API and calls the model that maps the values
   Future<bool> getCryptos({bool isRefresh = false}) async {
+    const displayedElements = 10;
     final response = await http.get(Uri.parse(
-        "https://api.coingecko.com/api/v3/coins?per_page=10&page=$currentPage"));
+        "https://api.coingecko.com/api/v3/coins?per_page=$displayedElements&page=$currentPage"));
 
     if (response.statusCode == 200) {
       final result = CryptosDataFromJson(response.body);
@@ -86,7 +87,6 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier {
     String currency = holder.toUpperCase();
     CollectionReference favorites =
         FirebaseFirestore.instance.collection('favorites');
-    String page = "$currentPage" + 10.toString();
     List<String>? favoris;
 
     if (boolFavorites!.isNotEmpty) {
@@ -109,7 +109,6 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier {
       void getFavs() async {
         var tempList = await getStringListValue();
         favoris = tempList;
-        print(favoris);
       }
 
       getFavs();
