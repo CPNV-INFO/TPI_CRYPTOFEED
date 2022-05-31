@@ -198,11 +198,31 @@ class _CryptoPageState extends State<CryptoPage> with ChangeNotifier {
                                   "isFavorite": FieldValue.arrayRemove([_user])
                                 });
                                 boolFavorites?[index] = "false";
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    "${cryptos.name} has been removed from favorites.",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.red,
+                                  duration: const Duration(milliseconds: 5000),
+                                ));
                               } else {
                                 favs.update({
                                   'isFavorite': FieldValue.arrayUnion([_user])
                                 });
                                 boolFavorites?[index] = "true";
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                    "${cryptos.name} has been added to favorites.",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.green,
+                                  duration: const Duration(milliseconds: 5000),
+                                ));
                               }
                               setState(() {});
                             } else {

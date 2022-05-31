@@ -74,7 +74,10 @@ class MyDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => NewsPage()),
+                MaterialPageRoute(
+                    builder: (context) => NewsPage(
+                          crypto: 'crypto',
+                        )),
               );
             },
             leading: const Icon(Icons.new_releases_sharp),
@@ -92,7 +95,7 @@ class MyDrawer extends StatelessWidget {
           StreamBuilder<User?>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
-              if (snapshot.data?.uid == null) {
+              if (snapshot.data?.uid != null) {
                 return ListTile(
                     title: const Text('Favorites'),
                     onTap: () {
@@ -101,7 +104,7 @@ class MyDrawer extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => FavoritesPage()));
                     },
-                    leading: const Icon(Icons.login));
+                    leading: const Icon(Icons.favorite));
               } else {
                 return Container();
               }

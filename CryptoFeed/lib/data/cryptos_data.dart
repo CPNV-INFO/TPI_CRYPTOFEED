@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 CryptosData CryptosDataFromJson(String str) =>
     CryptosData.fromJson(json.decode(str));
 
@@ -71,25 +73,3 @@ class CurrentPrice {
 
   Map<String, dynamic> toJson() => {"usd": usd, "chf": chf, "eur": eur};
 }
-
-/*class Favorites {
-  Favorites({
-    required this.isFavorite
-  });
-
-  List<dynamic> isFavorite;
-
-  factory Favorites.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot,
-      SnapshotOptions? options) {
-    final data = snapshot.data();
-    return Favorites(
-        isFavorite: data?['isFavorite']
-    );
-  }
-
-  Map<String, dynamic> toFirestore() {
-    return {
-      "isFavorite": isFavorite
-    };
-  }
-}*/

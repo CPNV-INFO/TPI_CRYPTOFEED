@@ -7,8 +7,9 @@ import 'package:CryptoFeed/widget/all.dart';
 import 'package:CryptoFeed/views/all.dart';
 
 class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+  const NewsPage({Key? key, required this.crypto}) : super(key: key);
 
+  final String crypto;
   @override
   State<NewsPage> createState() => _NewsPageState();
 }
@@ -21,7 +22,7 @@ class _NewsPageState extends State<NewsPage> {
 
   Future<bool> getNews({bool isRefresh = false}) async {
     final response = await http.get(Uri.parse(
-        "https://newsapi.org/v2/everything?q=crypto&apiKey=e05f822b086d44e7886db0ebbe4d54f6&page=$currentPage&pageSize=10&sortBy=publishedAt"));
+        "https://newsapi.org/v2/everything?q=${widget.crypto}&searchIn=title&apiKey=e05f822b086d44e7886db0ebbe4d54f6&page=$currentPage&pageSize=10&sortBy=publishedAt"));
 
     final totalResults = TotalResultsFromJson(response.body);
     final totalPages = int.parse(totalResults.totalResults) / 10;
@@ -133,12 +134,6 @@ class _NewsPageState extends State<NewsPage> {
       appBar: AppBar(
         title: const Text('News Feed'),
         centerTitle: true,
-        /*actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search),
-          )
-        ],*/
       ),
       body: _buildNews(),
     );
