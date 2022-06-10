@@ -54,6 +54,6 @@ class DefaultFirebaseOptions {
     projectId: 'cryptofeed-a032c',
     storageBucket: 'cryptofeed-a032c.appspot.com',
     iosClientId: '406021837694-s86r1b1lpsg2u0k128t4e11clefqtm95.apps.googleusercontent.com',
-    iosBundleId: 'untitled2',
+    iosBundleId: 'CryptoFeed',
   );
 }

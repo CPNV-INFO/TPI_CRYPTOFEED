@@ -4,7 +4,6 @@ TotalResults TotalResultsFromJson(String str) =>
     TotalResults.fromJson(json.decode(str));
 
 NewsData NewsDataFromJson(String str) => NewsData.fromJson(json.decode(str));
-//String NewsDataToJson(NewsData data) => json.encode(data.toJson());
 
 class TotalResults {
   TotalResults({required this.totalResults});
