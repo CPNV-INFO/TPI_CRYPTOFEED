@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled2/data/all.dart';
+import 'package:CryptoFeed/data/all.dart';
 import 'package:url_launcher/url_launcher.dart' as url;
 
 class OneNewsPage extends StatefulWidget {

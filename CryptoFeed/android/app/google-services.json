@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "406021837694",
+    "project_id": "cryptofeed-a032c",
+    "storage_bucket": "cryptofeed-a032c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406021837694:android:0d2941eb2c06f5d5e5192f",
+        "android_client_info": {
+          "package_name": "com.example.CryptoFeed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406021837694-gg5ens44d179ltmtin19piv8fao1u8u9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.CryptoFeed",
+            "certificate_hash": "6790169b50ac955c750f2c4274726ddb07363e1e"
+          }
+        },
+        {
+          "client_id": "406021837694-hbf8t916sh2clntgt9vnv4eiek7gt9lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLEJ7YT2geebWSQdRi4dS7KUu7G5PuxIQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406021837694-hbf8t916sh2clntgt9vnv4eiek7gt9lh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "406021837694-s86r1b1lpsg2u0k128t4e11clefqtm95.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "CryptoFeed"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
